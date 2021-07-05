@@ -22,6 +22,8 @@ class _LoginPageState extends State<LoginPage> with DialogMixin {
   void _response(AppAction action) {
     if (action is LoginError) {
       showErrorDialog(context, 'LoginError', action.error);
+    } else if (action is SignUpWithGoogleError) {
+      showErrorDialog(context, 'SignUpWithGoogleError', action.error);
     }
   }
 
@@ -66,6 +68,22 @@ class _LoginPageState extends State<LoginPage> with DialogMixin {
                       }
                       return null;
                     },
+                  ),
+                  ButtonBar(
+                    children: <Widget>[
+                      FlatButton(
+                        child: const Text('Sign in with Google'),
+                        onPressed: () {
+                          StoreProvider.of<AppState>(context).dispatch(SignUpWithGoogle(_response));
+                        },
+                      ),
+                      // FlatButton(
+                      //   child: const Text('Reset Password'),
+                      //   onPressed: () {
+                      //     Navigator.pushNamed(context, AppRoutes.resetPassword);
+                      //   },
+                      // ),
+                    ],
                   ),
                   const Spacer(),
                   FlatButton(
