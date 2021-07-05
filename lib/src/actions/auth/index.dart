@@ -7,4 +7,5 @@ import 'package:oracol/src/models/auth/index.dart';
 part 'login.dart';
 part 'sign_up.dart';
 part 'set.dart';
+part 'sign_out.dart';
 part 'index.freezed.dart';

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:oracol/src/models/auth/index.dart';
 
 class AuthApi {
@@ -37,5 +36,9 @@ class AuthApi {
     await _firestore.doc('users/${user.uid}').set(appUser.json);
 
     return appUser;
+  }
+
+  Future<void>signOut()async{
+    return await  _auth.signOut();
   }
 }
