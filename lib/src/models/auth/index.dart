@@ -7,3 +7,4 @@ import 'package:oracol/src/models/serializers.dart';
 part 'auth_state.dart';
 part 'app_user.dart';
 part 'index.g.dart';
+part 'registration_info.dart';

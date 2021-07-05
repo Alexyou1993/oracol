@@ -5,4 +5,6 @@ import 'package:oracol/src/actions/index.dart';
 import 'package:oracol/src/models/auth/index.dart';
 
 part 'login.dart';
+part 'sign_up.dart';
+part 'set.dart';
 part 'index.freezed.dart';

@@ -28,6 +28,7 @@ class _OracolState extends State<Oracol> with InitMixin<Oracol>{
           return StoreProvider<AppState>(
             store: store,
             child: MaterialApp(
+              debugShowCheckedModeBanner: false,
               title: 'Oracol',
               theme: ThemeData.dark(),
               routes: AppRoutes.routes,
@@ -38,6 +39,7 @@ class _OracolState extends State<Oracol> with InitMixin<Oracol>{
             throw snapshot.error;
           }
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Oracol',
             theme: ThemeData.dark(),
             home: const Scaffold(

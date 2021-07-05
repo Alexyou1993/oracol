@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -7,12 +6,9 @@ import 'package:oracol/src/models/index.dart';
 import 'package:redux/redux.dart';
 import 'package:rxdart/rxdart.dart';
 
-
-
-
 import 'package:flutter/cupertino.dart';
 
-mixin InitMixin<S extends StatefulWidget> on State<S>{
+mixin InitMixin<S extends StatefulWidget> on State<S> {
   final Completer<Store<AppState>> _completer = Completer<Store<AppState>>();
 
   @override
@@ -24,7 +20,7 @@ mixin InitMixin<S extends StatefulWidget> on State<S>{
   Future<void> _initState() async {
     final List<dynamic> result = await ConcatStream<dynamic>(<Stream<dynamic>>[
       init().asStream(),
-      Future<void>.delayed(const Duration(seconds: 5)).asStream(),
+      Future<void>.delayed(const Duration(seconds: 3)).asStream(),
     ]).toList();
 
     _completer.complete(result[0]);
