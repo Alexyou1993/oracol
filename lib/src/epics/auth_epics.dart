@@ -6,8 +6,8 @@ import 'package:oracol/src/models/index.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-class AppEpics {
-  const AppEpics({@required AuthApi api}):assert(api!=null),
+class AuthEpics {
+  const AuthEpics({@required AuthApi api}):assert(api!=null),
   _api = api;
 
   final AuthApi _api;
