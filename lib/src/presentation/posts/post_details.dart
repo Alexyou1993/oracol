@@ -21,10 +21,20 @@ class _PostDetailsState extends State<PostDetails> {
   Widget build(BuildContext context) {
     return PostInfoContainer(
       builder: (BuildContext context, PostInfo info) {
-        print(info.tags);
         return Scaffold(
           appBar: AppBar(
             title: const Text('New post'),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  StoreProvider.of<AppState>(context).dispatch(
+                    const CreatePost(),
+                  );
+                  Navigator.pushNamed(context, AppRoutes.home);
+                },
+                child: const Text('Share'),
+              ),
+            ],
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -71,6 +81,11 @@ class _PostDetailsState extends State<PostDetails> {
                       ),
                     ),
                   ],
+                ),
+                Wrap(
+                  children: info.tags.map((String tag) {
+                    return Chip(label: Text(tag));
+                  }).toList(),
                 ),
                 const Divider(),
                 ListTile(

@@ -6,8 +6,113 @@ part of posts_models;
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<Post> _$postSerializer = new _$PostSerializer();
 Serializer<PostsState> _$postsStateSerializer = new _$PostsStateSerializer();
 Serializer<PostInfo> _$postInfoSerializer = new _$PostInfoSerializer();
+
+class _$PostSerializer implements StructuredSerializer<Post> {
+  @override
+  final Iterable<Type> types = const [Post, _$Post];
+  @override
+  final String wireName = 'Post';
+
+  @override
+  Iterable<Object> serialize(Serializers serializers, Post object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+      'uid',
+      serializers.serialize(object.uid, specifiedType: const FullType(String)),
+      'images',
+      serializers.serialize(object.images,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
+      'tags',
+      serializers.serialize(object.tags,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
+      'users',
+      serializers.serialize(object.users,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
+    ];
+    if (object.description != null) {
+      result
+        ..add('description')
+        ..add(serializers.serialize(object.description,
+            specifiedType: const FullType(String)));
+    }
+    if (object.lat != null) {
+      result
+        ..add('lat')
+        ..add(serializers.serialize(object.lat,
+            specifiedType: const FullType(double)));
+    }
+    if (object.lng != null) {
+      result
+        ..add('lng')
+        ..add(serializers.serialize(object.lng,
+            specifiedType: const FullType(double)));
+    }
+    return result;
+  }
+
+  @override
+  Post deserialize(Serializers serializers, Iterable<Object> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new PostBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'uid':
+          result.uid = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'images':
+          result.images.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(String)]))
+              as BuiltList<Object>);
+          break;
+        case 'tags':
+          result.tags.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(String)]))
+              as BuiltList<Object>);
+          break;
+        case 'description':
+          result.description = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'users':
+          result.users.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(String)]))
+              as BuiltList<Object>);
+          break;
+        case 'lat':
+          result.lat = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double;
+          break;
+        case 'lng':
+          result.lng = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
 
 class _$PostsStateSerializer implements StructuredSerializer<PostsState> {
   @override
@@ -138,6 +243,207 @@ class _$PostInfoSerializer implements StructuredSerializer<PostInfo> {
     }
 
     return result.build();
+  }
+}
+
+class _$Post extends Post {
+  @override
+  final String id;
+  @override
+  final String uid;
+  @override
+  final BuiltList<String> images;
+  @override
+  final BuiltList<String> tags;
+  @override
+  final String description;
+  @override
+  final BuiltList<String> users;
+  @override
+  final double lat;
+  @override
+  final double lng;
+
+  factory _$Post([void Function(PostBuilder) updates]) =>
+      (new PostBuilder()..update(updates)).build();
+
+  _$Post._(
+      {this.id,
+      this.uid,
+      this.images,
+      this.tags,
+      this.description,
+      this.users,
+      this.lat,
+      this.lng})
+      : super._() {
+    if (id == null) {
+      throw new BuiltValueNullFieldError('Post', 'id');
+    }
+    if (uid == null) {
+      throw new BuiltValueNullFieldError('Post', 'uid');
+    }
+    if (images == null) {
+      throw new BuiltValueNullFieldError('Post', 'images');
+    }
+    if (tags == null) {
+      throw new BuiltValueNullFieldError('Post', 'tags');
+    }
+    if (users == null) {
+      throw new BuiltValueNullFieldError('Post', 'users');
+    }
+  }
+
+  @override
+  Post rebuild(void Function(PostBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  PostBuilder toBuilder() => new PostBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is Post &&
+        id == other.id &&
+        uid == other.uid &&
+        images == other.images &&
+        tags == other.tags &&
+        description == other.description &&
+        users == other.users &&
+        lat == other.lat &&
+        lng == other.lng;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc(
+        $jc(
+            $jc(
+                $jc(
+                    $jc(
+                        $jc($jc($jc(0, id.hashCode), uid.hashCode),
+                            images.hashCode),
+                        tags.hashCode),
+                    description.hashCode),
+                users.hashCode),
+            lat.hashCode),
+        lng.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('Post')
+          ..add('id', id)
+          ..add('uid', uid)
+          ..add('images', images)
+          ..add('tags', tags)
+          ..add('description', description)
+          ..add('users', users)
+          ..add('lat', lat)
+          ..add('lng', lng))
+        .toString();
+  }
+}
+
+class PostBuilder implements Builder<Post, PostBuilder> {
+  _$Post _$v;
+
+  String _id;
+  String get id => _$this._id;
+  set id(String id) => _$this._id = id;
+
+  String _uid;
+  String get uid => _$this._uid;
+  set uid(String uid) => _$this._uid = uid;
+
+  ListBuilder<String> _images;
+  ListBuilder<String> get images =>
+      _$this._images ??= new ListBuilder<String>();
+  set images(ListBuilder<String> images) => _$this._images = images;
+
+  ListBuilder<String> _tags;
+  ListBuilder<String> get tags => _$this._tags ??= new ListBuilder<String>();
+  set tags(ListBuilder<String> tags) => _$this._tags = tags;
+
+  String _description;
+  String get description => _$this._description;
+  set description(String description) => _$this._description = description;
+
+  ListBuilder<String> _users;
+  ListBuilder<String> get users => _$this._users ??= new ListBuilder<String>();
+  set users(ListBuilder<String> users) => _$this._users = users;
+
+  double _lat;
+  double get lat => _$this._lat;
+  set lat(double lat) => _$this._lat = lat;
+
+  double _lng;
+  double get lng => _$this._lng;
+  set lng(double lng) => _$this._lng = lng;
+
+  PostBuilder();
+
+  PostBuilder get _$this {
+    if (_$v != null) {
+      _id = _$v.id;
+      _uid = _$v.uid;
+      _images = _$v.images?.toBuilder();
+      _tags = _$v.tags?.toBuilder();
+      _description = _$v.description;
+      _users = _$v.users?.toBuilder();
+      _lat = _$v.lat;
+      _lng = _$v.lng;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(Post other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$Post;
+  }
+
+  @override
+  void update(void Function(PostBuilder) updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$Post build() {
+    _$Post _$result;
+    try {
+      _$result = _$v ??
+          new _$Post._(
+              id: id,
+              uid: uid,
+              images: images.build(),
+              tags: tags.build(),
+              description: description,
+              users: users.build(),
+              lat: lat,
+              lng: lng);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'images';
+        images.build();
+        _$failedField = 'tags';
+        tags.build();
+
+        _$failedField = 'users';
+        users.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'Post', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
   }
 }
 
