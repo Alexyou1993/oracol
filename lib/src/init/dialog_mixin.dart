@@ -24,7 +24,7 @@ mixin DialogMixin {
     } else {
       return showCupertinoDialog(
         context: context,
-        builder: (context) {
+        builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: Text(title),
             content: Text('$error'),

@@ -9,4 +9,5 @@ part 'sign_up.dart';
 part 'set.dart';
 part 'sign_out.dart';
 part 'sign_up_with_google.dart';
+part 'reset_password.dart';
 part 'index.freezed.dart';
