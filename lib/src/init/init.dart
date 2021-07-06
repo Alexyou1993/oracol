@@ -22,7 +22,8 @@ Future<Store<AppState>> init() async {
     reducer,
     initialState: AppState.initialState(),
     middleware: <Middleware<AppState>>[
-      EpicMiddleware<AppState>(epic.epics),
+       EpicMiddleware<AppState>(epic.epics),
+
     ],
   );
 }

@@ -25,62 +25,65 @@ class PasswordPage extends StatelessWidget with DialogMixin{
       appBar: AppBar(
         title: const Text('Password'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          child: Builder(
-            builder: (BuildContext context) {
-              return Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'password',
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            child: Builder(
+              builder: (BuildContext context) {
+                return Column(
+                  children: <Widget>[
+                    TextFormField(
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        hintText: 'password',
+                      ),
+                      keyboardType: TextInputType.visiblePassword,
+                      onChanged: (String value) {
+                        StoreProvider.of<AppState>(context).dispatch(UpdateRegistrationInfo(password: value));
+                      },
+                      validator: (String value) {
+                        if (value.length < 6) {
+                          return 'Please choose a better password';
+                        }
+                        return null;
+                      },
                     ),
-                    keyboardType: TextInputType.visiblePassword,
-                    onChanged: (String value) {
-                      StoreProvider.of<AppState>(context).dispatch(UpdateRegistrationInfo(password: value));
-                    },
-                    validator: (String value) {
-                      if (value.length < 6) {
-                        return 'Please choose a better password';
-                      }
-                      return null;
-                    },
-                  ),
-                  const Spacer(),
-                  FlatButton(
-                    onPressed: () {
-                      if (Form.of(context).validate()) {
-                        StoreProvider.of<AppState>(context).dispatch(
-                          SignUp((AppAction action) {
-                            _response(context, action);
-                          }),
-                        );
-                      }
-                    },
-                    child: const Text('SignUp'),
-                  ),
-                  const Divider(),
-                  Text.rich(
-                    TextSpan(
-                      text: 'Already have on account?',
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Login',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+                    const Spacer(),
+                    FlatButton(
+                      onPressed: () {
+                        if (Form.of(context).validate()) {
+                          StoreProvider.of<AppState>(context).dispatch(
+                            SignUp((AppAction action) {
+                              _response(context, action);
+                            }),
+                          );
+                        }
+                      },
+                      child: const Text('SignUp'),
+                    ),
+                    const Divider(),
+                    Text.rich(
+                      TextSpan(
+                        text: 'Already have on account?',
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Login',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.popUntil(context, ModalRoute.withName(AppRoutes.home));
+                              },
                           ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.popUntil(context, ModalRoute.withName(AppRoutes.home));
-                            },
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

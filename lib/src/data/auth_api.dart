@@ -1,9 +1,11 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:oracol/src/models/auth/index.dart';
+import 'package:oracol/src/data/index.dart';
 
 class AuthApi {
   const AuthApi(
@@ -35,7 +37,8 @@ class AuthApi {
       b
         ..uid = user.uid
         ..username = username
-        ..email = user.email;
+        ..email = user.email
+        ..searchIndex = ListBuilder<String>(<String>[username].searchIndex);
     });
 
     await _firestore.doc('users/${user.uid}').set(appUser.json);
@@ -66,19 +69,28 @@ class AuthApi {
       return AppUser.fromJson(snapshot.data());
     }
 
-    final AppUser appUser = AppUser((b) {
+    final AppUser appUser = AppUser((AppUserBuilder b) {
       b
         ..uid = user.uid
         ..email = user.email
         ..username = user.email.split('@').first
-        ..photoUrl = user.photoURL;
+        ..photoUrl = user.photoURL
+        ..searchIndex = ListBuilder<String>(<String>[user.email.split('@').first].searchIndex);
     });
 
     await _firestore.doc('users${user.uid}').set(appUser.json);
     return appUser;
   }
 
-  Future<void> resetPassword(String email)  {
+  Future<void> resetPassword(String email) {
     return _auth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<List<AppUser>> searchUsers(String query) async {
+    final QuerySnapshot snapshot =
+        await _firestore.collection('users').where('searchIndex', arrayContains: query).get();
+    return snapshot.docs //
+        .map((QueryDocumentSnapshot snapshot) => AppUser.fromJson(snapshot.data()))
+        .toList();
   }
 }

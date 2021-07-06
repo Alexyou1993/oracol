@@ -20,6 +20,7 @@ class AuthEpics {
       TypedEpic<AppState, SignOut$>(_signOut),
       TypedEpic<AppState, SignUpWithGoogle$>(_signUpWithGoogle),
       TypedEpic<AppState, ResetPassword$>(_resetPassword),
+      TypedEpic<AppState, SearchUsers$>(_searchUsers),
     ]);
   }
 
@@ -36,9 +37,10 @@ class AuthEpics {
     return actions //
         .flatMap((SignUp$ action) => Stream<SignUp$>.value(action)
             .asyncMap((SignUp$ action) => _api.signUp(
-                email: store.state.auth.info.email,
-                password: store.state.auth.info.username,
-                username: store.state.auth.info.username))
+                  email: store.state.auth.info.email,
+                  password: store.state.auth.info.password,
+                  username: store.state.auth.info.username ?? store.state.auth.info.email.split('@').first,
+                ))
             .map((AppUser user) => SignUp.successful(user))
             .onErrorReturnWith((dynamic error) => SignUp.error(error))
             .doOnData(action.response));
@@ -63,8 +65,17 @@ class AuthEpics {
   Stream<AppAction> _resetPassword(Stream<ResetPassword$> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((ResetPassword$ action) => Stream<ResetPassword$>.value(action)
-        .asyncMap((ResetPassword$ action) => _api.resetPassword(action.email))
-        .mapTo(const ResetPassword.successful())
-        .onErrorReturnWith((dynamic error) => ResetPassword.error(error)));
+            .asyncMap((ResetPassword$ action) => _api.resetPassword(action.email))
+            .mapTo(const ResetPassword.successful())
+            .onErrorReturnWith((dynamic error) => ResetPassword.error(error)));
+  }
+
+  Stream<AppAction> _searchUsers(Stream<SearchUsers$> actions, EpicStore<AppState> store) {
+    return actions //
+        .debounceTime(const Duration(milliseconds: 500))
+        .flatMap((SearchUsers$ action) => Stream<SearchUsers$>.value(action)
+            .asyncMap((SearchUsers$ action) => _api.searchUsers(action.query))
+            .map((List<AppUser> users) => SearchUsers.successful(users))
+            .onErrorReturnWith((dynamic error) => SearchUsers.error(error)));
   }
 }
